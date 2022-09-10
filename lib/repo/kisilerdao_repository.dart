@@ -1,41 +1,93 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:kisiler_uygulamasi/entity/kisiler.dart';
+import 'package:kisiler_uygulamasi/entity/kisiler_cevap.dart';
+import 'package:http/http.dart' as http;
 
 class KisilerDaoRepository {// dao: Database Access Object
+
+  List<Kisiler> parseKisilerCevap(String cevap){
+    // var jsonVeri = json.decode(cevap);
+    // var kisilerCevap = KisilerCevap.fromJson(jsonVeri);
+    // return kisilerCevap.kisiler;
+    return KisilerCevap.fromJson(json.decode(cevap)).kisiler;
+  }
+
   Future<void> kisiKayit(String kisi_ad, String kisi_tel) async {
-    print("Kişi kayıt $kisi_ad - $kisi_tel");
+    // POST
+
+    //http lib
+    //var url = Uri.parse("http://kasimadalan.pe.hu/kisiler/insert_kisiler.php");
+    //var veri = {"kisi_ad":kisi_ad,"kisi_tel":kisi_tel};//Map'in değer kısmı String olmalıdır.
+    //var cevap = await http.post(url,body: veri);
+    //print("Kişi ekle : ${cevap.body}");
+
+    //dio lib
+    var url = "http://kasimadalan.pe.hu/kisiler/insert_kisiler.php";
+    var veri = {"kisi_ad":kisi_ad,"kisi_tel":kisi_tel};
+    var cevap = await Dio().post(url,data: FormData.fromMap(veri));
+    print("Kişi ekle : ${cevap.data.toString()}");
   }
 
   Future<void> kisiGuncelle(int kisi_id, String kisi_ad, String kisi_tel) async {
-    print("Kişi güncelle $kisi_id - $kisi_ad - $kisi_tel");
+    // POST
+
+    //http lib
+    //var url = Uri.parse("http://kasimadalan.pe.hu/kisiler/update_kisiler.php");
+    //var veri = {"kisi_id":kisi_id.toString(),"kisi_ad":kisi_ad,"kisi_tel":kisi_tel};//Map'in değer kısmı String olmalıdır.
+    //var cevap = await http.post(url,body: veri);
+    //print("Kişi güncelle : ${cevap.body}");
+
+    //dio lib
+    var url = "http://kasimadalan.pe.hu/kisiler/update_kisiler.php";
+    var veri = {"kisi_id":kisi_id,"kisi_ad":kisi_ad,"kisi_tel":kisi_tel};
+    var cevap = await Dio().post(url,data: FormData.fromMap(veri));
+    print("Kişi güncelle : ${cevap.data.toString()}");
   }
 
   Future<List<Kisiler>> tumKisileriAl() async {
-    var kisilerListesi = <Kisiler>[];
+    // GET
 
-    var k1 = Kisiler(kisi_id: 1, kisi_ad: "Ahmet", kisi_tel: "1111");
-    var k2 = Kisiler(kisi_id: 2, kisi_ad: "Zeynep", kisi_tel: "2222");
-    var k3 = Kisiler(kisi_id: 3, kisi_ad: "Beyza", kisi_tel: "3333");
-    var k4 = Kisiler(kisi_id: 4, kisi_ad: "Ece", kisi_tel: "4444");
-    kisilerListesi.add(k1);
-    kisilerListesi.add(k2);
-    kisilerListesi.add(k3);
-    kisilerListesi.add(k4);
+    //http lib
+    //var url = Uri.parse("http://kasimadalan.pe.hu/kisiler/tum_kisiler.php");
+    //var cevap = await http.get(url);
+    //return parseKisilerCevap(cevap.body);
 
-    return kisilerListesi;
+    //dio lib
+    var url = "http://kasimadalan.pe.hu/kisiler/tum_kisiler.php";
+    var cevap = await Dio().get(url);
+    return parseKisilerCevap(cevap.data.toString());
   }
 
   Future<List<Kisiler>> kisiAra(String aramaKelimesi) async {
-    var kisilerListesi = <Kisiler>[];
+    // POST
 
-    var k1 = Kisiler(kisi_id: 1, kisi_ad: "Ahmet", kisi_tel: "1111");
-    var k2 = Kisiler(kisi_id: 2, kisi_ad: "Zeynep", kisi_tel: "2222");
-    kisilerListesi.add(k1);
-    kisilerListesi.add(k2);
+    //http lib
+    //var url = Uri.parse("http://kasimadalan.pe.hu/kisiler/tum_kisiler_arama.php");
+    //var veri = {"kisi_ad":aramaKelimesi};
+    //var cevap = await http.post(url,body:veri);
+    //return parseKisilerCevap(cevap.body);
 
-    return kisilerListesi;
+    //dio lib
+    var url = "http://kasimadalan.pe.hu/kisiler/tum_kisiler_arama.php";
+    var veri = {"kisi_ad":aramaKelimesi};
+    var cevap = await Dio().post(url,data:FormData.fromMap(veri));
+    return parseKisilerCevap(cevap.data.toString());
   }
 
   Future<void> kisiSil(int kisi_id) async {
-    print("Kişi sil : $kisi_id");
+    // POST
+
+    //http lib
+    //var url = Uri.parse("http://kasimadalan.pe.hu/kisiler/delete_kisiler.php");
+    //var veri = {"kisi_id":kisi_id.toString()};
+    //var cevap = await http.post(url,body:veri);
+    //print("Kişi sil : ${cevap.body}");
+
+    //dio lib
+    var url = "http://kasimadalan.pe.hu/kisiler/delete_kisiler.php";
+    var veri = {"kisi_id":kisi_id};
+    var cevap = await Dio().post(url,data:FormData.fromMap(veri));
+    print("Kişi sil : ${cevap.data.toString()}");
   }
 }

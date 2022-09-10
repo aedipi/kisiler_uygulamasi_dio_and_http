@@ -72,7 +72,7 @@ class _AnasayfaState extends State<Anasayfa> {
                                 action: SnackBarAction(
                                     label: "Evet",
                                     onPressed: (){
-                                      context.read<AnasayfaCubit>().sil(kisi.kisi_id);
+                                      context.read<AnasayfaCubit>().sil(int.parse(kisi.kisi_id));
                                     }
                                 ),
                             ),

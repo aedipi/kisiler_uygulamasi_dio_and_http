@@ -47,7 +47,7 @@ class _KisiDetaySayfaState extends State<KisiDetaySayfa> {
                 ),
               ),
               ElevatedButton(onPressed: (){
-                context.read<KisiDetayCubit>().guncelle(widget.kisi.kisi_id, tfKisiAd.text, tfKisiTel.text);
+                context.read<KisiDetayCubit>().guncelle(int.parse(widget.kisi.kisi_id), tfKisiAd.text, tfKisiTel.text);
               }, child: const Text("GÜNCELLE")),
             ],
           ),
